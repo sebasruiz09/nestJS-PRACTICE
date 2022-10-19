@@ -5,35 +5,45 @@ import {
   Put,
   Delete,
   Param,
-  ParseIntPipe,
   Body,
+  ParseUUIDPipe,
+  // ValidationPipe,
 } from '@nestjs/common';
 import { CarsService } from './cars.service';
+import { CreateCarDto } from './dto/create-car.dto';
 
+// decorator controller is a controller for routes and methods
 @Controller('cars')
+// @UsePipes(ValidationPipe)
 export class CarsController {
   constructor(private readonly carsService: CarsService) {}
 
+  // decorator for get API REQUEST
   @Get()
   getAllcars() {
     return this.carsService.findAll();
   }
 
+  // :id is a parameter for the route
   @Get(':id')
-  findCar(@Param('id', ParseIntPipe) id: number) {
+  // parseUUID for UUID V4
+  findCar(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
     return this.carsService.findId(id);
   }
 
+  // decorator for post API REQUEST
   @Post()
-  createCar(@Body() body: any) {
-    return body;
+  createCar(@Body() craateCarDto: CreateCarDto) {
+    return craateCarDto;
   }
 
+  // decorator for put API REQUEST
   @Put()
   updateCar(@Body() body: any) {
     return body;
   }
 
+  // decorator for delete API REQUEST
   @Delete()
   deleteCar() {
     return {
