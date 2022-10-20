@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 // uuid is a package for generate unique id
 import { v4 as uuid } from 'uuid';
 import { car } from './interfaces/car.interface';
@@ -11,7 +15,7 @@ export class CarsService {
   // cars array with car interface
   private cars: car[] = [
     {
-      id: '40958092-7eea-4692-8f86-3aab9e1604bc',
+      id: uuid(),
       brand: 'honda',
       model: 'toyota',
     },
@@ -54,18 +58,22 @@ export class CarsService {
     return car;
   }
 
-  updateCar(updateCarDto: updateCarDto) {
-    const id: string = updateCarDto.id;
+  updateCar(id: string, updateCarDto: updateCarDto) {
+    let car: car = this.findId(id);
+    if (updateCarDto.id && updateCarDto.id !== id)
+      throw new BadRequestException();
     this.cars.map((element) => {
       if (element.id === id) {
-        console.log(element);
-        const car: car = {
-          id,
-          ...element,
-          ...updateCarDto,
-        };
-        console.log(car);
+        car = { ...element, ...updateCarDto, id };
+        return car;
       }
+      return car;
     });
+    return car;
+  }
+
+  deleteCar(id: string) {
+    this.findId(id);
+    this.cars = this.cars.filter((element) => element.id !== id);
   }
 }

@@ -47,7 +47,7 @@ export class CarsController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateDto: updateCarDto,
   ) {
-    return this.carsService.updateCar(updateDto);
+    return this.carsService.updateCar(id, updateDto);
   }
 
   // decorator for put API REQUEST
@@ -57,12 +57,8 @@ export class CarsController {
   }
 
   // decorator for delete API REQUEST
-  @Delete()
-  deleteCar() {
-    return {
-      method: 'delete',
-      message: 'car deleted',
-      status: 200,
-    };
+  @Delete(':id')
+  deleteCar(@Param('id', ParseUUIDPipe) id: string) {
+    return this.carsService.deleteCar(id);
   }
 }
