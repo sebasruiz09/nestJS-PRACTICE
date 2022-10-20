@@ -14,17 +14,17 @@ import { updateCarDto } from './dto/update-car.dto';
 export class CarsService {
   // cars array with car interface
   private cars: car[] = [
-    {
-      id: uuid(),
-      brand: 'honda',
-      model: 'toyota',
-    },
-    {
-      // uuid is a function for generate unique id
-      id: uuid(),
-      brand: 'suzuki',
-      model: 'jeep',
-    },
+    // {
+    //   id: uuid(),
+    //   brand: 'honda',
+    //   model: 'toyota',
+    // },
+    // {
+    //   // uuid is a function for generate unique id
+    //   id: uuid(),
+    //   brand: 'suzuki',
+    //   model: 'jeep',
+    // },
   ];
 
   findAll() {
@@ -75,5 +75,9 @@ export class CarsService {
   deleteCar(id: string) {
     this.findId(id);
     this.cars = this.cars.filter((element) => element.id !== id);
+  }
+
+  fillCarsWithSeed(cars: car[]) {
+    this.cars = cars;
   }
 }
