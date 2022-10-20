@@ -3,6 +3,7 @@ import {
   Get,
   Post,
   Put,
+  Patch,
   Delete,
   Param,
   Body,
@@ -12,6 +13,7 @@ import {
 } from '@nestjs/common';
 import { CarsService } from './cars.service';
 import { CreateCarDto } from './dto/create-car.dto';
+import { updateCarDto } from './dto/update-car.dto';
 
 // decorator controller is a controller for routes and methods
 @Controller('cars')
@@ -37,6 +39,15 @@ export class CarsController {
   createCar(@Body() carDto: CreateCarDto) {
     // pase data transfer object to service
     return this.carsService.createCar(carDto);
+  }
+
+  // decorator Patch for update partial data
+  @Patch(':id')
+  updatePartialCar(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateDto: updateCarDto,
+  ) {
+    return this.carsService.updateCar(updateDto);
   }
 
   // decorator for put API REQUEST
